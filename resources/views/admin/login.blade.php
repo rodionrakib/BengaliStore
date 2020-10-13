@@ -38,6 +38,9 @@
                 <div class="p-5">
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                    @if(Session::has('error'))
+                    <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('error') }}</p>
+                    @endif
                   </div>
                   <form class="user" method="post" action="{{route('admin.login')}}">
                     @csrf;

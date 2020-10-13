@@ -4,20 +4,18 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Traits\HasRoles;
 
-class Employee extends Authenticatable
+class Employee extends Authenticatable 
 {
-    protected $guarded = [];
-    
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class);
-    }
+    use HasRoles;
 
-    public function assignRole(Role $role)
-    {
-        $this->roles()->save($role);
-    }
+
+    protected $guarded = [];
+
+
+
     public function showStatus()
     {
         return $this->status == 1 ? 'Active':"Forbidden";
@@ -29,4 +27,6 @@ class Employee extends Authenticatable
         return $this->roles->contains($superAdminRole);
 
     }
+
+    
 }

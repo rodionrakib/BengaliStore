@@ -3,10 +3,10 @@
 namespace Tests\Feature\Admin\Users;
 
 use App\Models\Employee;
-use App\Models\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class UserFeatureTest extends TestCase
@@ -20,7 +20,7 @@ class UserFeatureTest extends TestCase
     {
         parent::setUp();
         $this->superAdmin = factory(Employee::class)->create();
-        $this->superAdmin->assignRole(Role::create(['name'=>'super_admin','label'=>'Super Admin']));    
+        $this->superAdmin->assignRole(Role::create(['name'=>'super_admin','guard_name'=>'employee']));    
     }
 
     

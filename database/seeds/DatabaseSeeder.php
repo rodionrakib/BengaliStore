@@ -1,7 +1,8 @@
 <?php
 
 use App\Models\Employee;
-use App\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,15 +14,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+        $admin = factory(Employee::class)->create(['email'=>'sovon.kucse@gmail.com']);
 
-        $admin = factory(Employee::class)->create(['name'=>'Admin']);
+        $superRole = Role::create(['name'=>'super_admin','guard_name'=>'employee']);
 
-        $superRole = Role::create(['name'=>'super_admin','label'=>'Super Admin']);
+        Role::create(['name'=>'Editor','guard_name'=>'employee']);
+
+        Role::create(['name'=>'Writter','guard_name'=>'employee']);
+
+        Role::create(['name'=>'Publisher','guard_name'=>'employee']);
+
+
 
         $admin->assignRole($superRole);
-        
-        factory(Employee::class,5)->create();
+
+        $this->call(ProductCategorySeeder::class);
+        // $this->call(ProductSeeder::class);
 
     }
 }

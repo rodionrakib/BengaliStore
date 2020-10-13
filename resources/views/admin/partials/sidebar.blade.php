@@ -58,6 +58,22 @@
         </div>
       </li>
 
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProduct" aria-expanded="true" aria-controls="collapseProduct">
+          <i class="fas fa-fw fa-wrench"></i>
+          <span>Product</span>
+        </a>
+        <div id="collapseProduct" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Manage Product:</h6>
+            <a class="collapse-item" href="{{(route('admin.products.create'))}}">Add Product</a>
+            <a class="collapse-item" href="{{(route('admin.products.index'))}}">Product List</a>
+            <a class="collapse-item" href="{{(route('admin.categories.create'))}}">Add Category</a>
+            <a class="collapse-item" href="{{(route('admin.categories.index'))}}">Category List</a>
+          </div>
+        </div>
+      </li>
+
       <!-- Divider -->
       <hr class="sidebar-divider">
 

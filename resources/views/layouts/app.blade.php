@@ -1,6 +1,10 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
+    <meta property='og:title' content="Title of the article"/>
+    <meta property="og:image" content="http://dbl-ceramics.appswind.com/storage/741/DLS6060-002GR%283D%29.jpg"/>
+    <meta property="og:description" content="Description that will show in the preview"/>
+    <meta property="g:url" content="//www.example.com/URL of the article" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -11,6 +15,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -76,5 +81,6 @@
             @yield('content')
         </main>
     </div>
+@yield('script')
 </body>
 </html>
