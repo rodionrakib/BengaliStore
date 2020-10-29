@@ -13,9 +13,12 @@ class ProductCategorySeeder extends Seeder
     public function run()
     {
         
-        factory(ProductCategory::class)->create([ 'name' => 'Shirt' , 'slug' => 'shirt']);
-        factory(ProductCategory::class)->create([ 'name' => 'Sharee' , 'slug' => 'sharee']);
-        factory(ProductCategory::class)->create([ 'name' => 'Kamis' , 'slug' => 'kamis']);
-        factory(ProductCategory::class)->create([ 'name' => 'T-Shirt' , 'slug' => 't-shirt']);
+        $fasCat = factory(ProductCategory::class)->create([ 'name' => 'Fashion' , 'slug' => 'fashion']);
+        $men = factory(ProductCategory::class)->create([ 'name' => 'Men' , 'slug' => 'men']);
+        $women = factory(ProductCategory::class)->create([ 'name' => 'Women' , 'slug' => 'women']);
+        $jw = factory(ProductCategory::class)->create([ 'name' => 'jewellery' , 'slug' => 'jewellery']);
+        $fasCat->appendNode($men);
+        $fasCat->appendNode($women);
+        $fasCat->appendNode($jw);
     }
 }

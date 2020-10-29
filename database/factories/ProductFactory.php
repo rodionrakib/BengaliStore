@@ -16,6 +16,7 @@ $factory->define(Product::class, function (Faker $faker) {
         'short_description' => $faker->paragraph,
         'long_description' => $faker->text,
         'featured' => false, 
+        'status' => 0
     ];
 });
 

@@ -12,7 +12,7 @@ class ProductCategoryController extends Controller
 {
 	public function create()
 	{
-    	$categories = ProductCategory::whereIsRoot()->get();
+    	$categories = ProductCategory::visible()->get();
 		return view('admin.products.categories.create',compact('categories'));
 	}
 

@@ -27,7 +27,6 @@ class ProductController extends Controller
 			'name' => 'required',
 			'slug' => 'required|unique:products,slug',
 			'short_description' => 'required',
-			'long_description' => 'required',
 			'price' => 'required|numeric',
 			
 		]);

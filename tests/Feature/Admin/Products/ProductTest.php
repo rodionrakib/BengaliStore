@@ -28,13 +28,6 @@ class ProductTest extends TestCase
 
     }
 
-    /** @test */
-    public function can_visit_product_create_page()
-    {
-        $this->signInAsSuperAdmin();
-        $this->get(route('admin.products.create'))->assertStatus(200)->assertSee("Add Product");
-    }
-
      /** @test */
     public function can_visit_product_list_page()
     {
@@ -47,9 +40,10 @@ class ProductTest extends TestCase
     {
         
 
-        $this->withoutExceptionHandling();
+        $params = factory(Product::class)->raw();
 
-        $product = 'apple';
+    
+
         $cover = UploadedFile::fake()->image('file.png', 600, 600);
 
         $thumbnails = [
@@ -58,19 +52,9 @@ class ProductTest extends TestCase
             UploadedFile::fake()->image('cover.jpg', 600, 600)
         ];
 
-        $params = [
-            'sku' => $this->faker->numberBetween(1111111, 999999),
-            'name' => $product,
-            'slug' => Str::slug($product),
-            'short_description' => $this->faker->paragraph,
-            'long_description' => $this->faker->paragraph,
-            'cover' => $cover,
-            'quantity' => 10,
-            'price' => 9.95,
-            'status' => 1,
-            'image' => $thumbnails,
-            'featured' => true,
-        ];
+        $params['cover'] = $cover;
+        $params['image'] = $thumbnails;
+
 
         $this
             ->actingAs($this->employee, 'employee')
@@ -80,11 +64,12 @@ class ProductTest extends TestCase
             ->assertSessionHas('message', 'Create successful');
 
         $productCreated = Product::find(2);
+
         $this->assertEquals(1,$productCreated->getMedia('cover')->count());
         $this->assertEquals(3,$productCreated->getMedia('thumb')->count());
         
         $collection = collect($params);
-        $productsTableData = $collection->except(['image','cover']);
+        $productsTableData = $collection->except(['image','cover','featured']);
 
         $this->assertDatabaseHas('products',$productsTableData->toArray());
 
@@ -93,31 +78,24 @@ class ProductTest extends TestCase
     /** @test */
     public function it_can_remove_the_thumbnail()
     {
-        $this->withoutExceptionHandling();
-        $product = 'apple';
-        $cover = UploadedFile::fake()->image('file.png', 600, 600);
+        // given we have a product 
+        $product = factory(Product::class)->create();
 
-        $params = [
-            'sku' => $this->faker->numberBetween(1111111, 999999),
-            'name' => $product,
-            'slug' => Str::slug($product),
-            'short_description' => $this->faker->paragraph,
-            'long_description' => $this->faker->paragraph,
-            'cover' => $cover,
-            'quantity' => 10,
-            'price' => 9.95,
-            'status' => 1,
-            'image' => [
+        // which have 3 thumb images 
+
+        // when send correct request to correct path 
+
+
+        // thumb should be removed from the product 
+      
+        [
                 UploadedFile::fake()->image('file.png', 200, 200),
                 UploadedFile::fake()->image('file1.png', 200, 200),
                 UploadedFile::fake()->image('file2.png', 200, 200)
-            ]
+            
         ];
 
-         $this
-            ->actingAs($this->employee, 'employee')
-            ->post(route('admin.products.store'), $params);
-
+       
         $created = Product::first();
         $this->assertCount(3,$created->getThumbImages());
         dd($created->getThumbImages());

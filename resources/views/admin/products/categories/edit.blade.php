@@ -36,6 +36,7 @@
         @csrf
         @method('PATCH')
             <div class="box-body">
+                @if(!$category->isRoot())
                 <div class="form-group">
                     <label for="parent">Parent Category</label>
                     <select name="parent" id="parent" class="form-control select2">
@@ -47,6 +48,7 @@
                         @endforeach
                     </select>
                 </div>
+                @endif
                 <div class="form-group">
                     <label for="name">Name <span class="text-danger">*</span></label>
                     <input type="text" name="name" id="name" placeholder="Name" class="form-control" value="{{ $category->name }}">

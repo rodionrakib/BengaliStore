@@ -22,24 +22,31 @@ Auth::routes();
 
 Route::group(['namespace'=>'Front'],function(){
   	Route::post('/cart', 'CartController@store')->name('cart.store');
+    Route::patch('/cart/{rowId}', 'CartController@update')->name('cart.update');
   	Route::get('/cart', 'CartController@index')->name('cart.index');
-    Route::delete('/cart/{product}', 'CartController@destroy')->name('cart.destroy');
+    
+    Route::delete('/cart/{rowId}', 'CartController@destroy')->name('cart.destroy');
     Route::get('/empty', 'CartController@empty')->name('cart.empty');
 
-
-    Route::get('/checkout/shipping', 'CheckoutController@shipping')->name('checkout.shipping');
-    Route::post('/checkout/shipping', 'CheckoutController@shippingStore')->name('checkout.shipping.store');
-
-    Route::get('/checkout/payment', 'CheckoutController@payment')->name('checkout.payment');
-
-
-
+    // Route::get('/checkout','CheckoutController@index')->name('checkout.index');
 
 
   	Route::get('/products/{slug}', 'ProductController@show')->name('front.products.show');
     Route::get('/categories/{slug}', 'ProductCategoryController@show')->name('front.categories.show');
 
 });
+
+
+Route::group(['namespace'=>'Front'],function(){
+    Route::get('accounts/profile', 'AccountsController@profile')->name('accounts.profile')->middleware('auth');
+    Route::get('accounts/order', 'AccountsController@order')->name('accounts.order')->middleware('auth');
+    Route::get('accounts/address', 'AccountsController@address')->name('accounts.address')->middleware('auth');
+    Route::resource('accounts.address', 'CustomerAddressController')->middleware('auth');
+
+    Route::get('checkout', 'CheckoutController@index')->name('checkout.index')->middleware('auth');
+    Route::post('checkout', 'CheckoutController@store')->name('checkout.store')->middleware('auth');
+});
+
 
 
 
@@ -72,3 +79,18 @@ Route::group(['namespace'=>'Admin','middleware'=>'employee:employee', 'prefix'=>
 Route::group(['namespace'=>'Admin','middleware'=>'employee:employee', 'prefix'=>'admin'],function(){
     Route::resource('categories','ProductCategoryController',['as' => 'admin']);  
 });
+
+
+// SSLCOMMERZ Start
+Route::get('/example1', 'SslCommerzPaymentController@exampleEasyCheckout');
+Route::get('/example2', 'SslCommerzPaymentController@exampleHostedCheckout');
+
+Route::post('/pay', 'SslCommerzPaymentController@index');
+Route::post('/pay-via-ajax', 'SslCommerzPaymentController@payViaAjax');
+
+Route::post('/success', 'SslCommerzPaymentController@success');
+Route::post('/fail', 'SslCommerzPaymentController@fail');
+Route::post('/cancel', 'SslCommerzPaymentController@cancel');
+
+Route::post('/ipn', 'SslCommerzPaymentController@ipn');
+//SSLCOMMERZ END

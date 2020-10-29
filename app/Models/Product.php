@@ -93,7 +93,7 @@ class Product extends Model implements HasMedia,Buyable
         return $this->id;
     }
     public function getBuyableDescription($options = null){
-        return $this->title;
+        return $this->name;
     }
     public function getBuyablePrice($options = null){
         return $this->price;

@@ -52,11 +52,11 @@
                         </div>
                         <div class="form-group">
                             <label for="short_description">Short Description </label>
-                            <textarea class="form-control" name="short_description" id="short_description" rows="5" placeholder="Short Description">{{ old('short_description') }}</textarea>
+                            <textarea class="form-control" name="short_description" id="summernote1" rows="5" placeholder="Short Description">{{ old('short_description') }}</textarea>
                         </div>
                         <div class="form-group">
                             <label for="long_description">Long Description </label>
-                            <textarea class="form-control" name="long_description" id="long_description" rows="5" placeholder="Long Description">{{ old('long_description') }}</textarea>
+                            <textarea class="form-control" name="long_description" id="summernote2" rows="5" placeholder="Long Description">{{ old('long_description') }}</textarea>
                         </div>
                         <div class="form-group">
                             <label for="cover">Cover </label>
@@ -78,6 +78,7 @@
                                 <input type="text" name="price" id="price" placeholder="Price" class="form-control" value="{{ old('price') }}">
                             </div>
                         </div>
+                        @include('admin.shared.status-select', ['status' => 0])
                         <div class="form-check">
                           <input class="form-check-input" type="checkbox"  name="featured" id="defaultCheck1">
                           <label class="form-check-label" for="defaultCheck1">

@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         $admin->assignRole($superRole);
 
         $this->call(ProductCategorySeeder::class);
-        // $this->call(ProductSeeder::class);
+        $this->call(ProductSeeder::class);
 
     }
 }

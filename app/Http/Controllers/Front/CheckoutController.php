@@ -8,6 +8,57 @@ use Illuminate\Http\Request;
 
 class CheckoutController extends Controller
 {
+
+    function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    public function index()
+    {
+        
+        $isCartEmpty = Cart::count() == 0 ;
+
+        $customer = auth()->user();
+        $billingAddress = $customer->addresses()->first();
+        $addresses = $customer->addresses()->get();
+        $products = Cart::content();
+        $subtotal = Cart::subtotal();
+        $tax = Cart::tax();
+       
+
+        // $cartItems = $this->getCartItemsTransformed();
+        $paymentGateways = collect(['Bkash','Cash On Delevery']);
+
+         return view('front.checkout.index', [
+            'customer' => $customer,
+            'billingAddress' => $billingAddress,
+            'addresses' => $addresses,
+            'products' => $products,
+            'subtotal' => $subtotal,
+            'tax' => Cart::tax(),
+            'total' => Cart::totalFloat(),
+            'cartItems' => Cart::content(),
+            'payments' => $paymentGateways,
+
+        ]);
+        
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getCartItemsTransformed($cartItems) : Collection
+    {
+        return $cartItems->map(function ($item) {
+            $productRepo = new ProductRepository(new Product());
+            $product = $productRepo->findProductById($item->id);
+            $item->product = $product;
+            $item->cover = $product->cover;
+            $item->description = $product->description;
+            return $item;
+        });
+    }
     public function shipping()
     {
     	if(Cart::count() == 0 )

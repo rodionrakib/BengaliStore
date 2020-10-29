@@ -77,11 +77,11 @@
                         </div>
                         <div class="form-group">
                             <label for="description">Short Description </label>
-                            <textarea class="form-control ckeditor" name="short_description" id="short_description" rows="5" placeholder="Description">{!! $product->short_description  !!}</textarea>
+                            <textarea class="form-control ckeditor" name="short_description" id="summernote1" rows="5" placeholder="Description">{!! $product->short_description  !!}</textarea>
                         </div>
                         <div class="form-group">
                             <label for="description">Long Description </label>
-                            <textarea class="form-control ckeditor" name="long_description" id="long_description" rows="5" placeholder="Description">{!! $product->long_description  !!}</textarea>
+                            <textarea class="form-control ckeditor" name="long_description" id="summernote2" rows="5" placeholder="Description">{!! $product->long_description  !!}</textarea>
                         </div>
                         <div class="form-group">
                             <div class="col-md-3">

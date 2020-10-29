@@ -18,4 +18,10 @@ class ProductCategory extends Model implements HasMedia
     {
     	return $this->belongsToMany(Product::class);
     }
+
+    public function scopeVisible($query)
+    {
+        return $query->where('status',1);
+    }
+
 }

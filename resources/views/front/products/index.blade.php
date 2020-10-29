@@ -80,7 +80,12 @@
                             <span class="product-price">Tk {{$fp->price}}</span>
                         </div><!-- End .price-box -->
                         <div class="product-action">
-                            <button class="btn-icon btn-add-cart" data-toggle="modal" data-target="#addCartModal"><i class="icon-bag"></i>ADD TO CART</button>
+                            <form method="POST" action="{{route('cart.store')}}">
+                                @csrf
+                                <input type="hidden" name="id" value="{{$fp->id}}">
+                                <input type="hidden" name="quantity" value="1">
+                                <button class="btn-icon btn-add-cart" type="submit" ><i class="icon-bag"></i>ADD TO CART</button>
+                            </form>
                             {{-- <a href="#" class="btn-icon-wish"><i class="icon-heart"></i></a> --}}
                             {{-- <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i class="fas fa-external-link-alt"></i></a>  --}}
                         </div>

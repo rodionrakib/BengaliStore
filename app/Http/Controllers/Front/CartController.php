@@ -12,19 +12,25 @@ class CartController extends Controller
 
 	public function index()
 	{
-		$items = Cart::content();
+		$cartItems = Cart::content();
         $total = Cart::total();
         $subTotal = Cart::subtotal();
-		return view('front.cart.index',compact('items','total','subTotal'));
+		return view('front.cart.index',compact('cartItems','total','subTotal'));
 	}
+
     public function store(Request $request)
     {
 
-    	$product = Product::findOrFail($request->id);
+    	Cart::add(Product::findOrFail($request->id),$request->quantity);
 
-    	Cart::add($product->id, $product->name, $request->quantity,$product->price, 0, ['size' => $request->size])->associate(Product::class);
-    	
         return redirect()->route('cart.index')->with('message', 'Add to cart successful');
+    }
+
+    public function update(Request $request,$rowId)
+    {
+
+        Cart::update($rowId,$request->quantity);
+        return redirect()->route('cart.index')->with('message', 'Update cart successful');
     }
 
     public function empty()
@@ -34,10 +40,15 @@ class CartController extends Controller
 
     }
 
-    public function destroy($id)
+    public function destroy($rowId)
     {
-        Cart::remove($id);
-        return redirect()->route('cart.index');
+        Cart::remove($rowId);
+        return redirect()->route('cart.index')->with('message', 'Removed to cart successful');
 
+    }
+
+    public function showLoginForm()
+    {
+        return view('front.cart.login');
     }
 }

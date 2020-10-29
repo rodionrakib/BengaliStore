@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\CustomerAddress;
 use App\Models\Role;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -38,5 +39,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    
+    public function addresses()
+    {
+        return $this->hasMany(CustomerAddress::class,'customer_id');
+    }    
 }

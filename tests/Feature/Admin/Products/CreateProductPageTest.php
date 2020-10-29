@@ -15,7 +15,6 @@ class CreateProductPageTest extends TestCase
     /** @test */
     public function it_should_not_show_to_customers()
     {
-        $this->withoutExceptionHandling();
         $this->actingAs($this->customer, 'web');
         $this->get(route('admin.products.create'))
             ->assertSessionHas(['error' => 'You must be an employee to see this page'])

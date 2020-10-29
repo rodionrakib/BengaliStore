@@ -14,6 +14,7 @@
   <!-- Custom fonts for this template-->
   <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote.min.css" rel="stylesheet">
 
   <!-- Custom styles for this template-->
   <link href="{{asset('css/sb-admin-2.min.css')}}" rel="stylesheet">
@@ -80,6 +81,84 @@
   <!-- Page level custom scripts -->
   <script src="{{asset('js/demo/chart-area-demo.js')}}"></script>
   <script src="{{asset('js/demo/chart-pie-demo.js')}}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote.min.js"></script>
+
+  <script>
+
+
+
+    $(document).ready(function() {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $('#summernote1').summernote({
+        callbacks: {
+            onImageUpload: function(files) {
+                for(let i=0; i < files.length; i++) {
+                    $.upload1(files[i]);
+                }
+            }
+        },
+        height: 100,
+    });
+
+    $('#summernote2').summernote({
+        callbacks: {
+            onImageUpload: function(files) {
+                for(let i=0; i < files.length; i++) {
+                    $.upload2(files[i]);
+                }
+            }
+        },
+        height: 100,
+    });
+    $.upload1 = function (file) {
+        let out = new FormData();
+        out.append('file', file, file.name);
+
+        $.ajax({
+            method: 'POST',
+            url: '/admin/upload',
+            contentType: false,
+            cache: false,
+            processData: false,
+            data: out,
+            success: function (data) {
+                console.log($(this));
+                $('#summernote1').summernote('insertImage',data.path);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error(textStatus + " " + errorThrown);
+            }
+        });
+    };
+
+
+    $.upload2 = function (file) {
+        let out = new FormData();
+        out.append('file', file, file.name);
+
+        $.ajax({
+            method: 'POST',
+            url: '/admin/upload',
+            contentType: false,
+            cache: false,
+            processData: false,
+            data: out,
+            success: function (data) {
+                console.log($(this));
+                $('#summernote2').summernote('insertImage', data.path);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error(textStatus + " " + errorThrown);
+            }
+        });
+    };
+    });
+</script>  
   @yield('js')
 
 </body>

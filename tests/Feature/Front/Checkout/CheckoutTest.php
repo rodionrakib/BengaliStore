@@ -9,42 +9,30 @@ use Tests\TestCase;
 class CheckoutTest extends TestCase
 {
     use RefreshDatabase;
-    /** @test */
-    public function can_not_visit_checkout_shiping_with_empty_cart()
-    {
-        $this->withoutExceptionHandling();
-        $this->get('checkout/shipping')->assertRedirect(route('home'));;
-    }
+
+
 
 
     /** @test */
-    public function by_givining_valid_shipping_data_guest_user_can_proceed_to_payment()
+    public function it_shows_error_page_when_checking_out_without_item_in_the_cart()
     {
         $this->withoutExceptionHandling();
-        $attr = [
-            'name' => 'Rakib Ahmed',
-            'mobile' => '01717416646',
-            'address' => '112 Kawranbajar',
-            'zip' => '9302'
-
-        ];
-
-        $response = $this->post('checkout/shipping',$attr);
-        // one order can contain 2 address  shipping / billing 
-        
-        // make sure and address is created / stored in session 
-        $response->assertSessionHasAll(['shipping' =>  $attr]);
-
-        $response->assertRedirect(route('checkout.payment'));
-
+        $this
+            ->actingAs($this->customer, 'web')
+            ->get(route('checkout.index'))
+            ->assertStatus(200)
+            ->assertSee('No products in cart yet.')
+            ->assertSee('Show now!');
     }
 
-
-        /** @test */
-    public function can_not_visit_payment_page_without_added_shipping_address()
+   
+    /** @test */
+    public function it_redirects_to_login_screen_when_checking_out_while_you_are_still_logged_out()
     {
-        $this->withoutExceptionHandling();
-        $this->get('checkout/payment')->assertRedirect(route('checkout.shipping'));;
+        $this
+            ->get(route('checkout.index'))
+            ->assertStatus(302)
+            ->assertRedirect(route('login'));
     }
 
 }
