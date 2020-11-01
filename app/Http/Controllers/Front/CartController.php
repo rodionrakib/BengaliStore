@@ -23,7 +23,12 @@ class CartController extends Controller
 
     	Cart::add(Product::findOrFail($request->id),$request->quantity);
 
-        return redirect()->route('cart.index')->with('message', 'Add to cart successful');
+        $htmlCart = view('front.include.header_cart')->render();
+
+        return response()->json(['msg' => 'Product added to cart successfully!', 'data' => $htmlCart]);
+
+
+        // return redirect()->route('cart.index')->with('message', 'Add to cart successful');
     }
 
     public function update(Request $request,$rowId)

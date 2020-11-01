@@ -4,6 +4,7 @@
 @section('content')
 
 <div class="container">
+    <span id="status"></span>
     <div class="row">
         <div class="col-lg-9 offset-lg-3">
             <div class="home-slider owl-carousel owl-carousel-lazy owl-theme">
@@ -64,6 +65,7 @@
                         </a>
                     </figure>
                     <div class="product-details">
+                        
                         <div class="category-list">
                             <a href="{{route('front.categories.show',['slug' => $fp->categories()->first()->slug])}}" class="product-category">{{$fp->categories()->first()->name}}</a>
                         </div>
@@ -80,14 +82,21 @@
                             <span class="product-price">Tk {{$fp->price}}</span>
                         </div><!-- End .price-box -->
                         <div class="product-action">
-                            <form method="POST" action="{{route('cart.store')}}">
+                            {{-- <form method="POST" action="{{route('cart.store')}}">
                                 @csrf
                                 <input type="hidden" name="id" value="{{$fp->id}}">
                                 <input type="hidden" name="quantity" value="1">
                                 <button class="btn-icon btn-add-cart" type="submit" ><i class="icon-bag"></i>ADD TO CART</button>
-                            </form>
-                            {{-- <a href="#" class="btn-icon-wish"><i class="icon-heart"></i></a> --}}
-                            {{-- <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i class="fas fa-external-link-alt"></i></a>  --}}
+                            </form> --}}
+                            <button class="btn-icon btn-add-cart add-to-cart" data-id="{{ $fp->id }}"  ><i class="icon-bag"></i>ADD TO CART</button>
+                            <a href="#" class="btn-icon-wish"><i class="icon-heart"></i></a>
+                            <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i class="fas fa-external-link-alt"></i></a> 
+                            {{-- <form method="POST" action="{{route('wishlist.store')}}">
+                                @csrf
+                                <input type="hidden" name="id" value="{{$fp->id}}">
+                                <button type="submit" class="btn" ><i class="icon-bag"></i>ADD TO WISHLIST</button>
+                            </form> --}}
+                            
                         </div>
                     </div><!-- End .product-details -->
                 </div>
@@ -96,10 +105,10 @@
     </div><!-- End .row -->
     <div class="mb-3"></div><!-- margin -->
 
-    <h2 class="title text-center">Popular {{$cat1->name}}</h2>
+    <h2 class="title text-center">Popular {{$womanCategory->name}}</h2>
 
     <div class="products-carousel owl-carousel owl-theme owl-nav-top">
-        @foreach($cat1->products as $product)
+        @foreach($popularWomen as $product)
         <div class="product-default left-details mb-4">
             <figure>
                 <a href="{{$product->path()}}">
@@ -108,7 +117,7 @@
             </figure>
             <div class="product-details">
                 <div class="category-list">
-                    <a href="{{route('front.categories.show',['slug' => $cat1->slug])}}" class="product-category">{{$cat1->name}}</a>
+                    <a href="{{route('front.categories.show',['slug' => $womanCategory->slug])}}" class="product-category">{{$womanCategory->name}}</a>
                 </div>
                 <h2 class="product-title">
                     <a href="{{$product->path()}}">{{$product->name}}</a>
@@ -124,7 +133,12 @@
                 </div><!-- End .price-box -->
                 <div class="product-action">
                     <button class="btn-icon btn-add-cart" data-toggle="modal" data-target="#addCartModal"><i class="icon-bag"></i>ADD TO CART</button>
-                    <a href="#" class="btn-icon-wish"><i class="icon-heart"></i></a>
+                    {{-- <a href="#" class="btn-icon-wish"><i class="icon-heart"></i></a> --}}
+                    <form method="POST" action="{{route('wishlist.store')}}">
+                        @csrf
+                        <input type="hidden" name="id" value="{{$product->id}}">
+                        <button type="submit" class="btn" ><i class="icon-bag"></i>ADD TO WISHLIST</button>
+                    </form>
                     <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i class="fas fa-external-link-alt"></i></a> 
                 </div>
             </div><!-- End .product-details -->
@@ -133,7 +147,85 @@
      
     </div><!-- End .featured-proucts -->
 
+
+    <div class="mb-6"></div><!-- margin -->
+
+
+    <h2 class="title text-center">Popular {{$menCategory->name}}</h2>
+
+    <div class="products-carousel owl-carousel owl-theme owl-nav-top">
+        @foreach($popularMen as $product)
+        <div class="product-default left-details mb-4">
+            <figure>
+                <a href="{{$product->path()}}">
+                    <img src="{{$product->coverImagePath()}}">
+                </a>
+            </figure>
+            <div class="product-details">
+                <div class="category-list">
+                    <a href="{{route('front.categories.show',['slug' => $menCategory->slug])}}" class="product-category">{{$menCategory->name}}</a>
+                </div>
+                <h2 class="product-title">
+                    <a href="{{$product->path()}}">{{$product->name}}</a>
+                </h2>
+                <div class="ratings-container">
+                    <div class="product-ratings">
+                        <span class="ratings" style="width:0%"></span><!-- End .ratings -->
+                        <span class="tooltiptext tooltip-top"></span>
+                    </div><!-- End .product-ratings -->
+                </div><!-- End .product-container -->
+                <div class="price-box">
+                    <span class="product-price">${{$product->price}}</span>
+                </div><!-- End .price-box -->
+                <div class="product-action">
+                    <button class="btn-icon btn-add-cart" data-toggle="modal" data-target="#addCartModal"><i class="icon-bag"></i>ADD TO CART</button>
+                    {{-- <a href="#" class="btn-icon-wish"><i class="icon-heart"></i></a> --}}
+                    <form method="POST" action="{{route('wishlist.store')}}">
+                        @csrf
+                        <input type="hidden" name="id" value="{{$product->id}}">
+                        <button type="submit" class="btn" ><i class="icon-bag"></i>ADD TO WISHLIST</button>
+                    </form>
+                    <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i class="fas fa-external-link-alt"></i></a> 
+                </div>
+            </div><!-- End .product-details -->
+        </div>
+        @endforeach
+     
+    </div><!-- End .featured-proucts -->
+    
+
     <div class="mb-6"></div><!-- margin -->
 </div><!-- End .container -->
+
+@endsection
+
+@section('script')
+
+    <script type="text/javascript">
+        $(".add-to-cart").click(function (e) {
+            e.preventDefault();
+
+            var ele = $(this);
+
+            ele.siblings('.btn-loading').show();
+
+            $.ajax({
+                url: '{{ route('cart.store') }}',
+                method: "post",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: ele.attr("data-id")
+                },
+                dataType: "json",
+                success: function (response) {
+
+                    ele.siblings('.btn-loading').hide();
+
+                    $("span#status").html('<div class="alert alert-success">'+response.msg+'</div>');
+                    $("#header-bar").html(response.data);
+                }
+            });
+        });
+    </script>
 
 @endsection

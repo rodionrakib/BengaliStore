@@ -28,7 +28,8 @@ Route::group(['namespace'=>'Front'],function(){
     Route::delete('/cart/{rowId}', 'CartController@destroy')->name('cart.destroy');
     Route::get('/empty', 'CartController@empty')->name('cart.empty');
 
-    // Route::get('/checkout','CheckoutController@index')->name('checkout.index');
+    Route::post('customer/wishlists', 'WishlistController@store')->name('wishlist.store')->middleware('auth');
+    Route::delete('customer/wishlists/{product}', 'WishlistController@destroy')->name('wishlist.destroy')->middleware('auth');
 
 
   	Route::get('/products/{slug}', 'ProductController@show')->name('front.products.show');
@@ -37,14 +38,25 @@ Route::group(['namespace'=>'Front'],function(){
 });
 
 
-Route::group(['namespace'=>'Front'],function(){
-    Route::get('accounts/profile', 'AccountsController@profile')->name('accounts.profile')->middleware('auth');
-    Route::get('accounts/order', 'AccountsController@order')->name('accounts.order')->middleware('auth');
-    Route::get('accounts/address', 'AccountsController@address')->name('accounts.address')->middleware('auth');
-    Route::resource('accounts.address', 'CustomerAddressController')->middleware('auth');
+Route::group(['namespace'=>'Front' , 'middleware' => 'auth' ],function(){
+    Route::get('accounts/profile', 'AccountsController@profile')->name('accounts.profile');
+    Route::get('accounts/order', 'AccountsController@order')->name('accounts.order');
+    Route::get('accounts/address', 'AccountsController@address')->name('accounts.address');
+    Route::get('accounts/wishlists', 'WishlistController@index')->name('wishlist.index');
+    // Route::get('accounts/wishlists/erase', 'WishlistController@destroy')->name('wishlist.destroy');
 
-    Route::get('checkout', 'CheckoutController@index')->name('checkout.index')->middleware('auth');
-    Route::post('checkout', 'CheckoutController@store')->name('checkout.store')->middleware('auth');
+    Route::post('accounts/address', 'CustomerAddressController@store')->name('accounts.address.store');
+    Route::get('accounts/address/create', 'CustomerAddressController@create')->name('accounts.address.create');
+    Route::get('accounts/address/{address}/edit', 'CustomerAddressController@edit')->name('accounts.address.edit');
+
+    Route::patch('accounts/address/{address}', 'CustomerAddressController@update')->name('accounts.address.update');
+    Route::delete('accounts/address/{address}', 'CustomerAddressController@destroy')->name('accounts.address.delete');
+
+
+    // Route::resource('accounts.address', 'CustomerAddressController');
+
+    Route::get('checkout', 'CheckoutController@index')->name('checkout.index');
+    Route::post('checkout', 'CheckoutController@store')->name('checkout.store');
 });
 
 

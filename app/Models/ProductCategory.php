@@ -24,4 +24,9 @@ class ProductCategory extends Model implements HasMedia
         return $query->where('status',1);
     }
 
+    public function popularProducts($limit)
+    {
+        return $this->products->sortByDesc('view_count')->take($limit);
+    }
+
 }

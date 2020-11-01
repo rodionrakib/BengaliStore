@@ -25,6 +25,7 @@ class CreateProductsTable extends Migration
             $table->decimal('price');
             $table->integer('status')->default(0);
             $table->boolean('featured')->default(false);
+            $table->unsignedBigInteger('view_count')->default(0);
             $table->timestamps();
         });
     }

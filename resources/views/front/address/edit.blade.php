@@ -5,46 +5,39 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-9 order-lg-last dashboard-content">
-            <h2>Create Address</h2>
-            <form action="{{ route('accounts.address.store') }}" method="post" class="form" enctype="multipart/form-data">
+            <h2>Edit Address</h2>
+            <form action="{{ route('accounts.address.update',['address' => $address->id]) }}" method="post" class="form" enctype="multipart/form-data">
                 <input type="hidden" name="status" value="1">
                 <div class="box-body">
-                    {{ csrf_field() }}
+                    @csrf
+                    @method('PATCH')
                     <div class="form-group">
                        
-                        <label for="alias">Alias <span class="text-danger">*</span></label>
-                        @error('alias')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
-                        <input type="text" name="alias" id="alias" placeholder="Home or Office" class="form-control" value="{{ old('alias') }}">
+                        <label for="alias">Alias </label>
+                        <input type="text" name="alias" id="alias" placeholder="Home or Office" class="form-control" value="{{ $address->alias }}">
                     </div>
                     <div class="form-group">
                         
-                        <label for="address">Address <span class="text-danger">*</span></label>
-                         @error('address')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
-                        <input type="text" name="address" id="address" placeholder="Address" class="form-control" value="{{ old('address') }}">
+                        <label for="address">Address </label>
+                        
+                        <input type="text" name="address" id="address" placeholder="Address" class="form-control" value="{{ $address->address }}">
                     </div>
                    
                     <div class="form-group">
                         <label for="zip">Zip Code </label>
-                        <input type="text" name="zip" id="zip" placeholder="Zip code" class="form-control" value="{{ old('zip') }}">
+                        <input type="text" name="zip" id="zip" placeholder="Zip code" class="form-control" value="{{ $address->zip }}">
                     </div>
                     <div class="form-group">
 
-                        <label for="phone">Your Phone  <span class="text-danger">*</span></label>
-                        @error('phone')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                        @enderror
-                        <input type="text" name="phone" id="phone" placeholder="Phone number" class="form-control" value="{{ old('phone') }}">
+                        <label for="phone">Your Phone  </label>
+                        <input type="text" name="phone" id="phone" placeholder="Phone number" class="form-control" value="{{ $address->phone }}">
                     </div>
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
                     <div class="btn-group">
                         <a href="{{ route('accounts.profile') }}" class="btn btn-default">Back</a>
-                        <button type="submit" class="btn btn-primary">Create</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
                     </div>
                 </div>
             </form>

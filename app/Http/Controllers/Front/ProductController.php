@@ -12,14 +12,22 @@ class ProductController extends Controller
 	public function home()
 	{
 		$featuredProducts = Product::featured()->limit(4)->get();
-        $cat1 =  ProductCategory::find(1);
-        $cat2 =  ProductCategory::find(2);
-		return view('front.products.index',compact('featuredProducts','cat1','cat2'));
+        $menCategory =  ProductCategory::find(2);
+        $womanCategory =  ProductCategory::find(1);
+
+        $popularMen = $menCategory->popularProducts(4);
+        $popularWomen = $womanCategory->popularProducts(4);
+
+		return view('front.products.index',compact('featuredProducts',
+            'menCategory','womanCategory',
+            'popularMen','popularWomen'
+        ));
         
 	}
     public function show($slug)
     {
         $product = Product::whereSlug($slug)->firstOrFail();
+        $product->increaseViewCount();
     	$cover  = $product->getCoverImage();
         $images = $product->getMedia('thumb');
     	$images->prepend($cover);

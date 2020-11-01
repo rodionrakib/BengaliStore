@@ -42,9 +42,17 @@ class CustomerAddressController extends Controller
      */
     public function store(Request $request)
     {
-        $customer = auth()->user();
-        $customer->addresses()->create($request->all());
-        return redirect()->route('accounts.address');
+        // Validate
+        $request->validate([
+            'alias' => 'required',
+            'phone' => 'required',
+            'address' => 'required'
+        ]);
+
+        
+        $attributes = $request->only(['alias','address','zip','phone']);
+        auth()->user()->addresses()->create($attributes);
+        return redirect()->route('accounts.address')->with('message','Address Created !');
     }
 
     /**
@@ -64,9 +72,9 @@ class CustomerAddressController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(CustomerAddress $address)
     {
-        //
+        return view('front.address.edit',compact('address'));
     }
 
     /**
@@ -76,9 +84,14 @@ class CustomerAddressController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, CustomerAddress $address)
     {
-        //
+        if(!auth()->user()->addresses->contains($address))
+        {
+            abort(403);
+        }
+        $address->update($request->all());
+        return redirect()->route('accounts.address')->with('message','Address Updated');    
     }
 
     /**
@@ -87,8 +100,13 @@ class CustomerAddressController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(CustomerAddress $address)
     {
-        //
+        if(!auth()->user()->addresses->contains($address))
+        {
+            abort(403);
+        }
+        $address->delete();
+        return redirect()->route('accounts.address')->with('message','Address deleted'); 
     }
 }

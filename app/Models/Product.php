@@ -49,25 +49,13 @@ class Product extends Model implements HasMedia,Buyable
         return $query->where('status',1);
     }
 
-    
-    // public function addFeatureImage(UploadedFile $file)
-    // {
-        
-    //     $this->addMedia($file)->toMediaCollection('feature_image');
-        
-    // }
 
-    // public function featureImagePath()
-    // {
-    //     if($this->hasMedia('feature_image'))
-    //     {
-    //         return $this->getMedia('feature_image')->first()->getFullUrl();
+    public function increaseViewCount()
+    {
 
-    //     }
-
-    //     // return public_path('assets/images/products/product-1.jpg');
-    // }
-
+        $this->view_count += 1 ;
+        $this->save();
+    }
 
     public function getFearuteImage()
     {

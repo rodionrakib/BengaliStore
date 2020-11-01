@@ -117,4 +117,20 @@ class CartFeatureTest extends TestCase
             ->assertStatus(200);
     }
 
+    // WISH LIST RELETD TEST 
+
+    /** @test */
+    public function can_store_item_in_wishlist()
+    {
+        $this->actingAs($this->customer,'web');
+
+        $product = factory(Product::class)->create();
+
+        $this->customer->wish($product);
+
+        dd($this->customer->wishlists()->all()['default']);
+        
+    }
+
+
 }

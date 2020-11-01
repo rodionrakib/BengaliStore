@@ -11,6 +11,6 @@ $factory->define(CustomerAddress::class, function (Faker $faker) {
         'alias' => $faker->word,
         'address' => $faker->address,
         'customer_id' => factory(User::class)->create()->id,
-        
+		'phone' => $faker->phoneNumber,        
     ];
 });
