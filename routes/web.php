@@ -29,7 +29,7 @@ Route::group(['namespace'=>'Front'],function(){
     Route::get('/empty', 'CartController@empty')->name('cart.empty');
 
     Route::post('customer/wishlists', 'WishlistController@store')->name('wishlist.store')->middleware('auth');
-    Route::delete('customer/wishlists/{product}', 'WishlistController@destroy')->name('wishlist.destroy')->middleware('auth');
+    Route::delete('/customer/wishlists/{product}', 'WishlistController@destroy')->name('wishlist.destroy')->middleware('auth');
 
 
   	Route::get('/products/{slug}', 'ProductController@show')->name('front.products.show');

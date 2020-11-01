@@ -192,7 +192,7 @@ trait HasWishlists
     private function wishlistResponse($items)
     {
         
-        if (! $items) {
+        if (! $items || $items->isEmpty()) {
             return collect([]);
         }
 

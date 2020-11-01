@@ -2,9 +2,11 @@
 
 
 @section('content')
+@if($products->count() > 0 )
 <div class="container">
     <div class="row">
         <div class="col-lg-9 order-lg-last dashboard-content">
+            <span id="status"></span>
             <h2>Wishlist</h2>
             
              @include('layouts.errors-and-messages')
@@ -40,16 +42,17 @@
                                 <td>  
                                        
                                 
-                                <form action="{{route('wishlist.destroy',['product'=> $product->id])}}" method="post" class="form-horizontal">
+                               {{--  <form action="{{route('wishlist.destroy',['product'=> $product->id])}}" method="post" class="form-horizontal">
                                 @csrf
-                                @method('DELETE')
+                                @method('DELETE') --}}
                                 <div class="btn-group">
                                     
                                     <button 
-                                     
-                                     type="submit" class="btn btn-danger btn-sm"><i class="fa fa-times"></i> Remove</button>
+                                    class="btn btn-danger btn-sm remove-to-wishlist"  
+                                    data-productid = {{$product->id}}
+                                    ><i class="fa fa-times"></i> Remove</button>
                                 </div>
-                                </form>
+                                
                                 
 
                                 </td>
@@ -71,4 +74,44 @@
        @include('front.include.account-sidebar')
     </div><!-- End .row -->
 </div><!-- End .container -->
+@else
+   <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="alert alert-warning">No products in wishlist yet. <a href="{{ route('home') }}">Shop now!</a></p>
+            </div>
+        </div>
+    </div>
+@endif
+@endsection
+
+
+@section('script')
+
+    <script type="text/javascript">
+        // WISHLIST  Remove
+  $(".remove-to-wishlist").click(function (e) {
+            e.preventDefault();
+
+            var ele = $(this);
+            ele.siblings('.btn-loading').show();
+            var productId = ele.data('productid') ;
+           
+
+            $.ajax({
+                url: "/customer/wishlists/"+ele.data('productid'),
+                method: "delete",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                },
+                dataType: "json",
+                success: function (response) {
+                    
+                    ele.closest('tr').hide();
+                    $("span#status").html('<div class="alert alert-success">'+response.msg+'</div>');
+                }
+            });
+        });
+    </script>
+
 @endsection

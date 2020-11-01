@@ -35,7 +35,15 @@ class CartController extends Controller
     {
 
         Cart::update($rowId,$request->quantity);
-        return redirect()->route('cart.index')->with('message', 'Update cart successful');
+        $htmlCart = view('front.include.header_cart')->render();
+        $htmlCartSummary = view('front.include.cart_summary')->render();
+        $item  = Cart::get($rowId);
+        return response()->json([
+            'msg' => 'Cart updated!',
+            'cartdata' => $htmlCart,
+            'cartsummary' => $htmlCartSummary,
+            'subtotal' => $item->price * $item->qty,
+        ]);
     }
 
     public function empty()

@@ -6,7 +6,7 @@
             <li ><a href="{{route('accounts.profile')}}">Account Profile</a></li>
             <li><a class="active" href="{{route('accounts.address')}}">Address Book</a></li>
             <li><a  href="{{route('accounts.order')}}">My Orders</a></li>
-            <li><a href="#">My Wishlist</a></li>
+            <li><a href="{{route('wishlist.index')}}">My Wishlist</a></li>
 
         </ul>
     </div><!-- End .widget -->

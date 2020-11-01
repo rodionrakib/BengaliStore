@@ -58,48 +58,7 @@
     <div class="row justify-content-center">
         @foreach($featuredProducts as $fp)
             <div class="col-6 col-md-4 col-lg-3">
-                <div class="product-default left-details mb-4">
-                    <figure>
-                        <a href="{{$fp->path()}}">
-                            <img src="{{$fp->coverImagePath()}}">
-                        </a>
-                    </figure>
-                    <div class="product-details">
-                        
-                        <div class="category-list">
-                            <a href="{{route('front.categories.show',['slug' => $fp->categories()->first()->slug])}}" class="product-category">{{$fp->categories()->first()->name}}</a>
-                        </div>
-                        <h2 class="product-title">
-                            <a href="product.html">{{$fp->title}}</a>
-                        </h2>
-                        <div class="ratings-container">
-                            <div class="product-ratings">
-                                <span class="ratings" style="width:0%"></span><!-- End .ratings -->
-                                <span class="tooltiptext tooltip-top"></span>
-                            </div><!-- End .product-ratings -->
-                        </div><!-- End .product-container -->
-                        <div class="price-box">
-                            <span class="product-price">Tk {{$fp->price}}</span>
-                        </div><!-- End .price-box -->
-                        <div class="product-action">
-                            {{-- <form method="POST" action="{{route('cart.store')}}">
-                                @csrf
-                                <input type="hidden" name="id" value="{{$fp->id}}">
-                                <input type="hidden" name="quantity" value="1">
-                                <button class="btn-icon btn-add-cart" type="submit" ><i class="icon-bag"></i>ADD TO CART</button>
-                            </form> --}}
-                            <button class="btn-icon btn-add-cart add-to-cart" data-id="{{ $fp->id }}"  ><i class="icon-bag"></i>ADD TO CART</button>
-                            <a href="#" class="btn-icon-wish"><i class="icon-heart"></i></a>
-                            <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i class="fas fa-external-link-alt"></i></a> 
-                            {{-- <form method="POST" action="{{route('wishlist.store')}}">
-                                @csrf
-                                <input type="hidden" name="id" value="{{$fp->id}}">
-                                <button type="submit" class="btn" ><i class="icon-bag"></i>ADD TO WISHLIST</button>
-                            </form> --}}
-                            
-                        </div>
-                    </div><!-- End .product-details -->
-                </div>
+                @include('front.include.product_thumb',['product' => $fp])
             </div><!-- End .col-lg-3 -->
         @endforeach
     </div><!-- End .row -->
@@ -109,40 +68,7 @@
 
     <div class="products-carousel owl-carousel owl-theme owl-nav-top">
         @foreach($popularWomen as $product)
-        <div class="product-default left-details mb-4">
-            <figure>
-                <a href="{{$product->path()}}">
-                    <img src="{{$product->coverImagePath()}}">
-                </a>
-            </figure>
-            <div class="product-details">
-                <div class="category-list">
-                    <a href="{{route('front.categories.show',['slug' => $womanCategory->slug])}}" class="product-category">{{$womanCategory->name}}</a>
-                </div>
-                <h2 class="product-title">
-                    <a href="{{$product->path()}}">{{$product->name}}</a>
-                </h2>
-                <div class="ratings-container">
-                    <div class="product-ratings">
-                        <span class="ratings" style="width:0%"></span><!-- End .ratings -->
-                        <span class="tooltiptext tooltip-top"></span>
-                    </div><!-- End .product-ratings -->
-                </div><!-- End .product-container -->
-                <div class="price-box">
-                    <span class="product-price">${{$product->price}}</span>
-                </div><!-- End .price-box -->
-                <div class="product-action">
-                    <button class="btn-icon btn-add-cart" data-toggle="modal" data-target="#addCartModal"><i class="icon-bag"></i>ADD TO CART</button>
-                    {{-- <a href="#" class="btn-icon-wish"><i class="icon-heart"></i></a> --}}
-                    <form method="POST" action="{{route('wishlist.store')}}">
-                        @csrf
-                        <input type="hidden" name="id" value="{{$product->id}}">
-                        <button type="submit" class="btn" ><i class="icon-bag"></i>ADD TO WISHLIST</button>
-                    </form>
-                    <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i class="fas fa-external-link-alt"></i></a> 
-                </div>
-            </div><!-- End .product-details -->
-        </div>
+         @include('front.include.product_thumb',['category' => $womanCategory])
         @endforeach
      
     </div><!-- End .featured-proucts -->
@@ -155,40 +81,7 @@
 
     <div class="products-carousel owl-carousel owl-theme owl-nav-top">
         @foreach($popularMen as $product)
-        <div class="product-default left-details mb-4">
-            <figure>
-                <a href="{{$product->path()}}">
-                    <img src="{{$product->coverImagePath()}}">
-                </a>
-            </figure>
-            <div class="product-details">
-                <div class="category-list">
-                    <a href="{{route('front.categories.show',['slug' => $menCategory->slug])}}" class="product-category">{{$menCategory->name}}</a>
-                </div>
-                <h2 class="product-title">
-                    <a href="{{$product->path()}}">{{$product->name}}</a>
-                </h2>
-                <div class="ratings-container">
-                    <div class="product-ratings">
-                        <span class="ratings" style="width:0%"></span><!-- End .ratings -->
-                        <span class="tooltiptext tooltip-top"></span>
-                    </div><!-- End .product-ratings -->
-                </div><!-- End .product-container -->
-                <div class="price-box">
-                    <span class="product-price">${{$product->price}}</span>
-                </div><!-- End .price-box -->
-                <div class="product-action">
-                    <button class="btn-icon btn-add-cart" data-toggle="modal" data-target="#addCartModal"><i class="icon-bag"></i>ADD TO CART</button>
-                    {{-- <a href="#" class="btn-icon-wish"><i class="icon-heart"></i></a> --}}
-                    <form method="POST" action="{{route('wishlist.store')}}">
-                        @csrf
-                        <input type="hidden" name="id" value="{{$product->id}}">
-                        <button type="submit" class="btn" ><i class="icon-bag"></i>ADD TO WISHLIST</button>
-                    </form>
-                    <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i class="fas fa-external-link-alt"></i></a> 
-                </div>
-            </div><!-- End .product-details -->
-        </div>
+        @include('front.include.product_thumb',['category' => $menCategory])
         @endforeach
      
     </div><!-- End .featured-proucts -->
@@ -223,6 +116,34 @@
 
                     $("span#status").html('<div class="alert alert-success">'+response.msg+'</div>');
                     $("#header-bar").html(response.data);
+                }
+            });
+        });
+
+
+        // WISHLIST 
+
+         $(".add-to-wishlist").click(function (e) {
+            e.preventDefault();
+
+            var ele = $(this);
+
+            ele.siblings('.btn-loading').show();
+
+            $.ajax({
+                url: '{{ route('wishlist.store') }}',
+                method: "post",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: ele.attr("data-productid")
+                },
+                dataType: "json",
+                success: function (response) {
+
+                    ele.siblings('.btn-loading').hide();
+
+                    $("span#status").html('<div class="alert alert-success">'+response.msg+'</div>');
+                    // $("#header-bar").html(response.data);
                 }
             });
         });

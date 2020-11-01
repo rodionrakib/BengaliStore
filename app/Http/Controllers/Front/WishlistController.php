@@ -17,7 +17,7 @@ class WishlistController extends Controller
     public function index()
     {
         $lists = auth()->user()->wishlists();
-        $products = $lists->get('default')[0];
+        $products = $lists->isEmpty() ? collect([]) : $lists->get('default')[0];  
         return view('front.accounts.wishlist',compact('products'));
     }
 
@@ -41,6 +41,7 @@ class WishlistController extends Controller
     {
         $product = Product::findOrFail($request->id);
         auth()->user()->wish($product);
+        return response()->json(['msg' => 'Product added to wishlist!']);
 
     }
 
@@ -86,7 +87,9 @@ class WishlistController extends Controller
      */
     public function destroy(Product $product)
     {
+
        auth()->user()->unwish($product);
-       return redirect()->back();
+       return response()->json(['msg' => 'Product removed from wishlist!']);
+       
     }
 }
