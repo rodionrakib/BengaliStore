@@ -38,7 +38,31 @@ class Product extends Model implements HasMedia,Buyable
         return '/products/'.$this->slug;
     }
 
+    public function getRootCategory()
+    {
+        return $this->categories->first(function($cat){
+            return $cat->isRoot();
+        });
+    }
 
+
+    // public function ()
+    // {
+    //     $paths = $this->getCategoryPaths();
+    //     $html = "";
+    //     $paths->each(function($path){
+    //         $html .= "<li class=\"breadcrumb-item\"><a href=\"{{route('home')}}\"></a></li>";
+    //     });
+    // }
+    public function getBreadcrumb()
+    {
+       
+        $html = "";
+        $this->categories->each(function($cat) use (&$html){
+            $html .= "<li class=\"breadcrumb-item\"><a href=\"{$cat->path()}\">{$cat->name}</a></li>";
+        });
+        return $html;
+    }
     public function scopeFeatured($query)
     {
         return $query->where('status',1)->where('featured',true);

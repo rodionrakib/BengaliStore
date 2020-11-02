@@ -1,9 +1,13 @@
 @extends('layouts.front-master')
 
+@section('breadcrumb')
+{!! $breadCrumb !!}
+@endsection
 
 @section('content')
 
 <div class="container">
+    <span id="status"></span>
     <nav class="toolbox">
         <div class="toolbox-left">
             <div class="toolbox-item toolbox-sort">
@@ -19,6 +23,7 @@
                 </div><!-- End .select-custom -->
 
                 <a href="#" class="sorter-btn" title="Set Ascending Direction"><span class="sr-only">Set Ascending Direction</span></a>
+
             </div><!-- End .toolbox-item -->
         </div><!-- End .toolbox-left -->
 
@@ -37,31 +42,10 @@
     </nav>
 
     <div class="row row-sm">
+
     	@foreach($products as $product)
         <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
-            <div class="product-default">
-                <figure>
-                    <a href="{{$product->path()}}">
-                        <img src="{{$product->coverImagePath()}}">
-                    </a>
-                </figure>
-                <div class="product-details">
-                    <div class="ratings-container">
-                        <div class="product-ratings">
-                            <span class="ratings" style="width:100%"></span><!-- End .ratings -->
-                        </div><!-- End .product-ratings -->
-                    </div><!-- End .product-container -->
-                    <h2 class="product-title">
-                        <a href="product.html">{{$product->name}}</a>
-                    </h2>
-                    <div class="price-box">
-                        <span class="product-price">${{$product->price}}</span>
-                    </div><!-- End .price-box -->
-                    <div class="product-action">
-                        <button class="btn-icon btn-add-cart" data-toggle="modal" data-target="#addCartModal"><i class="icon-bag"></i>ADD TO CART</button> 
-                    </div>
-                </div><!-- End .product-details -->
-            </div>
+            @include('front.include.product_thumb')
         </div><!-- End .col-xl-3 -->
         @endforeach
     </div>
@@ -89,5 +73,63 @@
         </ul>
     </nav>
 </div><!-- End .container -->
+
+@endsection
+@section('script')
+
+    <script type="text/javascript">
+        $(".add-to-cart").click(function (e) {
+            e.preventDefault();
+
+            var ele = $(this);
+
+            ele.siblings('.btn-loading').show();
+
+            $.ajax({
+                url: '{{ route('cart.store') }}',
+                method: "post",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: ele.attr("data-id")
+                },
+                dataType: "json",
+                success: function (response) {
+
+                    ele.siblings('.btn-loading').hide();
+
+                    $("span#status").html('<div class="alert alert-success">'+response.msg+'</div>');
+                    $("#header-bar").html(response.data);
+                }
+            });
+        });
+
+
+        // WISHLIST 
+
+         $(".add-to-wishlist").click(function (e) {
+            e.preventDefault();
+
+            var ele = $(this);
+
+            ele.siblings('.btn-loading').show();
+
+            $.ajax({
+                url: '{{ route('wishlist.store') }}',
+                method: "post",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: ele.attr("data-productid")
+                },
+                dataType: "json",
+                success: function (response) {
+
+                    ele.siblings('.btn-loading').hide();
+
+                    $("span#status").html('<div class="alert alert-success">'+response.msg+'</div>');
+                    // $("#header-bar").html(response.data);
+                }
+            });
+        });
+    </script>
 
 @endsection

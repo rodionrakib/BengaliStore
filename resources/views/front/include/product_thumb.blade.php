@@ -5,13 +5,14 @@
                         </a>
                     </figure>
                     <div class="product-details">
+                        
                         @if(isset($category))
                            <div class="category-list">
-                                <a href="{{route('front.categories.show',['slug' => $category->slug])}}" class="product-category">{{$category->name}}</a>
+                                <a href="{{$category->path()}}" class="product-category">{{$category->name}}</a>
                                 </div>
                             @else
                             <div class="category-list">
-                            <a href="{{route('front.categories.show',['slug' => $product->categories()->first()->slug])}}" class="product-category">{{$product->categories()->first()->name}}</a>
+                            <a href="{{ $product->categories()->first()->path()}}" class="product-category">{{$product->categories()->first()->name}}</a>
                             </div>
                         @endif
                         <h2 class="product-title">

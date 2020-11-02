@@ -3,9 +3,13 @@
 
 @section('content')
 
+@section('breadcrumb')
+{!! $breadCrumb !!}
+@endsection
 <div class="container">
     <div class="row">
         <div class="col-lg-9">
+            <span id="status"></span>
             <div class="product-single-container product-single-default">
                 <div class="row">
                     <div class="col-lg-7 col-md-6">
@@ -41,7 +45,7 @@
 
                     <div class="col-lg-5 col-md-6">
                         <div class="product-single-details">
-                            <h1 class="product-title">{{$product->title}}</h1>
+                            <h1 class="product-title">{{$product->name}}</h1>
 
                             <div class="ratings-container">
                                 <div class="product-ratings">
@@ -65,11 +69,11 @@
                                 
                                 <div class="product-action">
                                     <div class="product-single-qty">
-                                        <input class="horizontal-quantity form-control" name="quantity" type="text">
+                                        <input class="horizontal-quantity form-control" id="quantity" name="quantity" type="text">
                                     </div><!-- End .product-single-qty -->
 
 
-                                    <button type="submit" class="paction add-cart" title="Add to Cart">
+                                    <button data-id = "{{$product->id}}" class="paction add-cart" id="add-cart-btn" title="Add to Cart">
                                         <span>Add to Cart</span>
                                     </button>
                                     
@@ -178,16 +182,15 @@
             <div class="sidebar-wrapper">
                 <div class="widget widget-collapse">
                     <h3 class="widget-title">
-                        <a data-toggle="collapse" href="#widget-body-1" role="button" aria-expanded="true" aria-controls="widget-body-1">electronics</a>
+                        <a data-toggle="collapse" href="{{$product->getRootCategory()->path()}}" role="button" aria-expanded="true" aria-controls="widget-body-1">{{$product->getRootCategory()->name}}</a>
                     </h3>
 
                     <div class="collapse show" id="widget-body-1">
                         <div class="widget-body">
                             <ul class="cat-list">
-                                <li><a href="#">Smart TVs</a></li>
-                                <li><a href="#">Cameras</a></li>
-                                <li><a href="#">Head Phones</a></li>
-                                <li><a href="#">Games</a></li>
+                                @foreach($product->getRootCategory()->children as $category)
+                                <li><a href="{{$category->path()}}">{{$category->name}}</a></li>
+                                @endforeach
                             </ul>
                         </div><!-- End .widget-body -->
                     </div><!-- End .collapse -->
@@ -498,5 +501,66 @@
 
     <div class="mb-lg-4"></div><!-- margin -->
 </div><!-- End .container -->
+
+@endsection
+
+
+@section('script')
+
+    <script type="text/javascript">
+        $("#add-cart-btn").click(function (e) {
+            e.preventDefault();
+
+            var ele = $(this);
+
+            ele.siblings('.btn-loading').show();
+
+            $.ajax({
+                url: '{{ route('cart.store') }}',
+                method: "post",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: ele.attr("data-id"),
+                    quantity: $('#quantity').val()
+                },
+                dataType: "json",
+                success: function (response) {
+
+                    ele.siblings('.btn-loading').hide();
+
+                    $("span#status").html('<div class="alert alert-success">'+response.msg+'</div>');
+                    $("#header-bar").html(response.data);
+                }
+            });
+        });
+
+
+        // WISHLIST 
+
+         $(".add-to-wishlist").click(function (e) {
+            e.preventDefault();
+
+            var ele = $(this);
+
+            ele.siblings('.btn-loading').show();
+
+            $.ajax({
+                url: '{{ route('wishlist.store') }}',
+                method: "post",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: ele.attr("data-productid")
+                },
+                dataType: "json",
+                success: function (response) {
+
+                    ele.siblings('.btn-loading').hide();
+
+                    $("span#status").html('<div class="alert alert-success">'+response.msg+'</div>');
+                    // $("#header-bar").html(response.data);
+                }
+            });
+        });
+    </script>
 
 @endsection

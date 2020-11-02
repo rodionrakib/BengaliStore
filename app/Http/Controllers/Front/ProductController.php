@@ -18,9 +18,10 @@ class ProductController extends Controller
         $popularMen = $menCategory->popularProducts(4);
         $popularWomen = $womanCategory->popularProducts(4);
 
-		return view('front.products.index',compact('featuredProducts',
+
+        return view('front.products.index',compact('featuredProducts',
             'menCategory','womanCategory',
-            'popularMen','popularWomen'
+            'popularMen','popularWomen',
         ));
         
 	}
@@ -28,9 +29,11 @@ class ProductController extends Controller
     {
         $product = Product::whereSlug($slug)->firstOrFail();
         $product->increaseViewCount();
+        $breadCrumb = $product->getBreadcrumb();
     	$cover  = $product->getCoverImage();
         $images = $product->getMedia('thumb');
     	$images->prepend($cover);
-    	return view('front.products.show',compact('product','images','cover')); 
+    	return view('front.products.show',compact('product','images','cover','breadCrumb')); 
     }
+
 }

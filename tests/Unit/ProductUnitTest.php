@@ -71,4 +71,26 @@ class ProductUnitTest extends TestCase
     	$this->assertEquals(2,$fresh->view_count);
 
     }
+
+    /** @test */
+    public function product_single_page_can_find_category_hierarchy_breadcrumb()
+    {
+        $dada = factory(ProductCategory::class)->create();
+        $baba = factory(ProductCategory::class)->create();
+        $dada->appendNode($baba);
+        $pola = factory(ProductCategory::class)->create();
+        $baba->appendNode($pola);
+
+        $product = factory(Product::class)->create();
+        $product->categories()->attach([$dada->id,$baba->id,$pola->id]);
+
+        $categories = $product->categories;
+
+        $paths = collect([]);
+        $categories->each(function($cat) use ($paths){
+            $paths->push($cat->path());
+        });
+
+        dd($paths);
+    }
 }

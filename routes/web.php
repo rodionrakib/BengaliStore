@@ -33,7 +33,7 @@ Route::group(['namespace'=>'Front'],function(){
 
 
   	Route::get('/products/{slug}', 'ProductController@show')->name('front.products.show');
-    Route::get('/categories/{slug}', 'ProductCategoryController@show')->name('front.categories.show');
+    Route::get('/categories/{slug1}/{slug2?}/{slug3?}', 'ProductCategoryController@show')->name('front.categories.show');
 
 });
 

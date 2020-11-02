@@ -6,7 +6,7 @@
                                             </a>
                                         </figure>
                                         <h2 class="product-title">
-                                            <a href="product.html">{{$item->name}}</a>
+                                            <a href="{{$item->model->path()}}">{{$item->name}}</a>
                                         </h2>
                                     </td>
                                     <td>TK {{$item->price}}</td>
@@ -14,7 +14,7 @@
                                     @csrf
                                     @method('PATCH') --}}
                                     <td>
-                                        <input class="form-control vertical-quantity" type="text" >
+                                        <input class="form-control vertical-quantity" type="text" value="{{$item->qty}}" >
                                     </td>
                                     {{-- <td>{{$item->options->has('size') ? $item->options->size : ''}}</td> --}}
                                     
