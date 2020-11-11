@@ -14,7 +14,7 @@ class ProductController extends Controller
 {
 	public function __construct()
 	{
-    	$this->middleware(['role:super_admin|admin']);
+    	// $this->middleware(['role:super_admin|admin']);
 	}
 
 
