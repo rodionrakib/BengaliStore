@@ -86,12 +86,13 @@ Route::group(['namespace'=>'Admin','middleware'=>'employee:employee'],function()
 
 
 Route::group(['namespace'=>'Admin','middleware'=>'employee:employee', 'prefix'=>'admin'],function(){
-    Route::resource('products','ProductController',['as' => 'admin']);
+    
     Route::get('product/remove/thums/{id}','MediaController@remove')->name('admin.product.remove.thumb'); 
     Route::get('product/remove/cover/{id}','MediaController@remove')->name('admin.product.remove.cover');  
 });
 
 Route::group(['namespace'=>'Admin','middleware'=>'employee:employee', 'prefix'=>'admin'],function(){
+    Route::resource('products','ProductController',['as' => 'admin']);
     Route::resource('categories','ProductCategoryController',['as' => 'admin']);  
 });
 
