@@ -36,7 +36,7 @@ class ProductSeeder extends Seeder
         $women->appendNode($kurti);
         $women->appendNode($salwar);
 
-        $file = UploadedFile::fake()->image('product.png', 600, 600);
+        // $file = UploadedFile::fake()->image('product.png', 600, 600);
         factory(Product::class,4)->states(['featured','enabled'])->create()->each(function($product) use($women,$salwar,$file){
           $product->categories()->attach([$women->id,$salwar->id]);
           // $product->addCover($file);
