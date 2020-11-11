@@ -37,12 +37,12 @@ class ProductSeeder extends Seeder
         $women->appendNode($salwar);
 
         // $file = UploadedFile::fake()->image('product.png', 600, 600);
-        factory(Product::class,4)->states(['featured','enabled'])->create()->each(function($product) use($women,$salwar,$file){
+        factory(Product::class,4)->states(['featured','enabled'])->create()->each(function($product) use($women,$salwar){
           $product->categories()->attach([$women->id,$salwar->id]);
           // $product->addCover($file);
         });
 
-        factory(Product::class,4)->states(['featured','enabled'])->create()->each(function($product) use($men,$shirt,$file){
+        factory(Product::class,4)->states(['featured','enabled'])->create()->each(function($product) use($men,$shirt){
           $product->categories()->attach([$men->id,$shirt->id]);
           // $product->addCover($file);
         });
