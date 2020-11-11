@@ -14,5 +14,10 @@ $factory->define(Order::class, function (Faker $faker) {
         'amount' => $faker->numberBetween(100,200000),
         'transaction_id' => uniqid(),
         'status' => 'ORDERED',
+        'cus_name' => $faker->name,
+        'cus_email' => $faker->email,
+        'cus_addr1' => $faker->address,
+        'cus_phone' => $faker->phoneNumber,
+
     ];
 });

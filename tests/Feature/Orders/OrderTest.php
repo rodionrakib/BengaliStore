@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Orders;
 
+use App\Models\CustomerAddress;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -25,6 +26,14 @@ class OrderTest extends TestCase
 
         $this->assertCount(2,$order->products);
         $this->assertTrue($order->products->contains(Product::find(3)));
+    }
+
+    /** @test */
+    public function order_has_a_shipping_address()
+    {
+        $order = factory(Order::class)->create();
+
+        $this->assertInstanceOf(CustomerAddress::class,$order->address);
     }
 
  

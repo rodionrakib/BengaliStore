@@ -39,19 +39,7 @@ class CustomerAddressTest extends TestCase
 
     }
 
-    /** @test */
-    public function alias_is_required_to_create_customer_address()
-    {
-        
-        $attributes = factory(CustomerAddress::class)->raw(['alias' => '' ]);
 
-
-        $this
-            ->actingAs($this->customer, 'web')
-            ->post(route('accounts.address.store'), $attributes)
-            ->assertSessionHasErrors('alias');
-
-    }
     /** @test */
     public function phone_is_required_to_create_customer_address()
     {
@@ -75,8 +63,6 @@ class CustomerAddressTest extends TestCase
 
         $attributes = factory(CustomerAddress::class)->raw(['customer_id' => $this->customer->id]);
 
-
-
         $this
             ->actingAs($this->customer, 'web')
             ->post(route('accounts.address.store'), $attributes)
@@ -84,6 +70,27 @@ class CustomerAddressTest extends TestCase
             ->assertRedirect(route('accounts.address'));
 
         $this->assertDatabaseHas('customer_addresses',$attributes);
+        $this->assertCount(1,$this->customer->addresses);
+    }
+
+    /** @test */
+    public function authenticated_customer_can_save_his_address_in_ajax_json()
+    {
+
+        $this->withoutExceptionHandling();
+
+        $attributes = factory(CustomerAddress::class)->raw(['customer_id' => $this->customer->id]);
+
+        $attributes['save-address'] = true;
+
+        
+        $this
+            ->actingAs($this->customer, 'web')
+            ->postJson(route('accounts.address.store'), $attributes);
+
+        $data = collect($attributes)->except('save-address');
+        $this->assertDatabaseHas('customer_addresses',$data->toArray());
+        $this->assertCount(1,$this->customer->addresses);
     }
 
     /** @test */
@@ -96,7 +103,6 @@ class CustomerAddressTest extends TestCase
 
         $attributes = [
             'phone' => '01539542041',
-            'alias' => 'Foo'
         ];
 
         $this

@@ -28,12 +28,21 @@ class ProductController extends Controller
     public function show($slug)
     {
         $product = Product::whereSlug($slug)->firstOrFail();
+        
         $product->increaseViewCount();
+        
         $breadCrumb = $product->getBreadcrumb();
-    	$cover  = $product->getCoverImage();
+    	
+        $cover  = $product->getCoverImage();
+        
         $images = $product->getMedia('thumb');
-    	$images->prepend($cover);
-    	return view('front.products.show',compact('product','images','cover','breadCrumb')); 
+    	
+        $images->prepend($cover);
+        
+        $popularProducts = $product->getRootCategory()->popularProducts(6);
+    	$featuredProducts = Product::where('featured',true)->take(8)->get();
+
+        return view('front.products.show',compact('product','images','cover','breadCrumb','popularProducts','featuredProducts')); 
     }
 
 }

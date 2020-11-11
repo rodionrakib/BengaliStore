@@ -68,7 +68,7 @@
                 <div class="header-middle">
                     <div class="container-fluid">
                         <div class="header-left">
-                            <a href="index.html" class="logo">
+                            <a href="{{route('home')}}" class="logo">
                                 <img src="assets/images/logo.png" alt="Porto Logo">
                             </a>
                         </div><!-- End .header-left -->

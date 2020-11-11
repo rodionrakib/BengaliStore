@@ -12,27 +12,15 @@ class CheckoutTest extends TestCase
 
 
 
-
     /** @test */
-    public function it_shows_error_page_when_checking_out_without_item_in_the_cart()
+    public function logedin_user_go_to_shipping_page_after_clicking_checkout_button()
     {
-        $this->withoutExceptionHandling();
-        $this
-            ->actingAs($this->customer, 'web')
-            ->get(route('checkout.index'))
-            ->assertStatus(200)
-            ->assertSee('No products in cart yet.')
-            ->assertSee('Show now!');
+    	$this->withoutExceptionHandling();
+        $this->actingAs($this->customer,'web');
+        $this->get('checkout/shipping')->assertStatus(200);
     }
 
    
-    /** @test */
-    public function it_redirects_to_login_screen_when_checking_out_while_you_are_still_logged_out()
-    {
-        $this
-            ->get(route('checkout.index'))
-            ->assertStatus(302)
-            ->assertRedirect(route('login'));
-    }
+    
 
 }

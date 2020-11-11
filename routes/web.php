@@ -55,7 +55,9 @@ Route::group(['namespace'=>'Front' , 'middleware' => 'auth' ],function(){
 
     // Route::resource('accounts.address', 'CustomerAddressController');
 
-    Route::get('checkout', 'CheckoutController@index')->name('checkout.index');
+    Route::get('checkout/shipping', 'CheckoutController@shipping')->name('checkout.shipping');
+    Route::get('checkout/payment', 'CheckoutController@payment')->name('checkout.payment');
+    Route::post('checkout/shipping', 'CheckoutController@shippingStore')->name('checkout.shipping.store');
     Route::post('checkout', 'CheckoutController@store')->name('checkout.store');
 });
 
@@ -77,6 +79,7 @@ Route::group(['namespace'=>'Admin','middleware'=>'employee:employee'],function()
     Route::get('/admin/users','UserController@index')->name('admin.users.index');
     Route::get('/admin/users/{user}/edit','UserController@edit')->name('admin.users.edit');
     Route::put('/admin/users/{user}','UserController@update')->name('admin.users.update');
+    Route::resource('/admin/orders', 'OrderController');
 
 });
 

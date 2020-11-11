@@ -12,12 +12,22 @@
                     {{ csrf_field() }}
                     <div class="form-group">
                        
-                        <label for="alias">Alias <span class="text-danger">*</span></label>
+                        <label for="alias">Alias </label>
                         @error('alias')
                             <div class="alert alert-danger">{{ $message }}</div>
                         @enderror
                         <input type="text" name="alias" id="alias" placeholder="Home or Office" class="form-control" value="{{ old('alias') }}">
                     </div>
+                   <div class="form-group">
+                            <label>City</label>
+                            <div class="select-custom">
+                                <select class="form-control form-control-sm" name="city_id">
+                                    @foreach(\App\Models\City::all() as $city)
+                                    <option value="{{$city->id}}">{{$city->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div><!-- End .select-custom -->
+                    </div><!-- End .form-group -->
                     <div class="form-group">
                         
                         <label for="address">Address <span class="text-danger">*</span></label>
@@ -51,19 +61,7 @@
                 
         </div><!-- End .col-lg-9 -->
 
-        <aside class="sidebar col-lg-3">
-            <div class="widget widget-dashboard">
-                <h3 class="widget-title">My Account</h3>
-
-                <ul class="list">
-                    <li class="active"><a href="{{route('accounts.profile')}}">Account Profile</a></li>
-                    <li><a href="{{route('accounts.address')}}">Address Book</a></li>
-                    <li><a href="{{route('accounts.order')}}">My Orders</a></li>
-                    <li><a href="#">My Wishlist</a></li>
-
-                </ul>
-            </div><!-- End .widget -->
-        </aside><!-- End .col-lg-3 -->
+      @include('front.include.account-sidebar')
     </div><!-- End .row -->
 </div><!-- End .container -->
 @endsection

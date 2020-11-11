@@ -25,6 +25,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::share('categoryMenu',ProductCategory::get()->toTree());
-    }
+        // View::share('categoryMenu',ProductCategory::get()->toTree());
+        View::composer('*',function($view){
+            $view->with('categoryMenu',ProductCategory::get()->toTree());
+        });
+    }   
 }

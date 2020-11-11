@@ -44,14 +44,28 @@ class CustomerAddressController extends Controller
     {
         // Validate
         $request->validate([
-            'alias' => 'required',
             'phone' => 'required',
-            'address' => 'required'
+            'address' => 'required',
+            'city_id' => 'required| exists:cities,id' ,
         ]);
 
         
-        $attributes = $request->only(['alias','address','zip','phone']);
+        $attributes = $request->only(['address','zip','phone','city_id']);
+        if($request->ajax())
+        {
+            if((boolean)$request->get('address_save'))
+            {
+                $address = auth()->user()->addresses()->create($attributes);
+                
+                $htmlAddress = view('front.include.address_card')->with('address',$address)->render();
+                return response()->json(['htmlAddress' => $htmlAddress]);
+            }
+
+
+        }
+                                
         auth()->user()->addresses()->create($attributes);
+        
         return redirect()->route('accounts.address')->with('message','Address Created !');
     }
 

@@ -14,6 +14,7 @@
                 <tbody>
                 <tr>
                     <td>Alias</td>
+                    <td>City</td>
                     <td>Address</td>
                     <td>Phone</td>
                     <td>Zip Code</td>
@@ -24,6 +25,7 @@
                 @foreach ($addresses as $address)
                     <tr>
                         <td>{{ $address->alias }}</td>
+                        <td>{{ $address->city->name }}</td>
                         <td>{{ $address->address }}</td>
                         <td>{{ $address->phone }}</td>
                         <td>{{ $address->zip }}</td>
